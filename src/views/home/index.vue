@@ -549,6 +549,8 @@ const getJobApi = (job) => {
               if (!res.data.isRunning) {
                 clearInterval(jobDetail._interval);
               }
+            }).catch(()=>{
+              clearInterval(jobDetail._interval);
             }));
           }, 10 * 1000);
         }
@@ -624,7 +626,6 @@ const buildJobHandle = (job) => {
 };
 
 const branchRadioUpdate = (job) => {
-  console.log(job.buildParams, '??');
   localStorage.setItem(job.name + '__BuildParams', JSON.stringify(job.buildParams));
 };
 
