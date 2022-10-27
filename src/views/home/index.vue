@@ -55,7 +55,7 @@
                 <n-card class="data-card">
                   <template #header>
                     <n-ellipsis>
-                      {{ job.name.replace(item._prefix, '') }}
+                      <a :href="job.url" target="_blank" style="text-decoration:none;color:#18a058">{{ job.name.replace(item._prefix, '') }}</a>
                       <template #tooltip>
                         <div style="text-align: center">
                           {{ job.name }}
@@ -425,8 +425,11 @@ const cardCols = reactive([
     key: 'startTime',
   },
   {
-    title: '分支(如果有)',
+    title: '分支和部署环境(如果有)',
     key: 'branch',
+    render(rowData) {
+      return rowData['buildParams'][0]['Value'] + '；' + rowData['buildParams'][1]['Value'];
+    },
   },
   {
     title: '操作',
@@ -582,6 +585,7 @@ const getViewApi = () => {
     if (res.code == 200) {
       data.views = res.data;
       data.views.forEach(async view => {
+        view.jobs = view.jobs.filter((job)=>job.color != 'disabled');
         let map = view.jobs.map(job => job.name);
         view._prefix = longestCommonPrefix(map);
       });

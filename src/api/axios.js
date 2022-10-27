@@ -5,7 +5,7 @@ let id = localStorage.getItem('__id');
 if (!id) {
   localStorage.setItem('__id', v4());
 }
-const baseurl = process.env.VUE_APP_BASEURL || 'http://localhost:8010/api';
+const baseurl = process.env.VUE_APP_BASEURL || 'http://192.168.110.244:8010/api';
 // create an axios instance
 const service = axios.create({
   baseURL: baseurl, // url = base url + request url
