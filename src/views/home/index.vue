@@ -183,6 +183,7 @@ import {
   getOnlineUsers,
   getView,
   getViews,
+  getRecord,
 } from '@/api';
 import { computed, nextTick, reactive, ref, toRef, unref, watch } from 'vue';
 import { NButton, NPopconfirm, useMessage } from 'naive-ui';
@@ -425,12 +426,36 @@ const cardCols = reactive([
     key: 'startTime',
   },
   {
-    title: '分支和部署环境(如果有)',
+    title: '分支(如果有)',
     key: 'branch',
-    render(rowData) {
-      return rowData['buildParams'][0]['Value'] + '；' + rowData['buildParams'][1]['Value'];
+  },
+  {
+    title: '部署环境(如果有)',
+    key: 'domin',
+        render(rowData) {
+      return rowData['buildParams'][1]['Value'];
     },
   },
+  // {
+  //   title: '日志',
+  //   key: 'record',
+  //   render(rowData, rowIndex) {
+  //     const toShowRecord = (job) => {
+  //       return getRecord({
+  //         jobName: job.jobName,
+  //         buildId: job.number,
+  //       }).then((res) => {
+  //         if (res.code == 200) {
+            
+  //         }
+  //       });
+  //     };
+  //     return <NButton
+  //         text
+  //         onClick={toShowRecord(rowData)}
+  //     >{ rowData.number }</NButton>;
+  //   },
+  // },
   {
     title: '操作',
     render(rowData) {

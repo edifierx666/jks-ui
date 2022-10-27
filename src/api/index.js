@@ -53,3 +53,10 @@ export function getOnlineUsers() {
     url: '/online/users',
   });
 }
+
+export function getRecord() {
+  return request({
+    method: 'post',
+    url: '/job/build/console',
+  });
+}
