@@ -54,9 +54,10 @@ export function getOnlineUsers() {
   });
 }
 
-export function getRecord() {
+export function getRecord(data) {
   return request({
     method: 'post',
     url: '/job/build/console',
+    data,
   });
 }

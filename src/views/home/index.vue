@@ -186,6 +186,8 @@ import {
   getRecord,
 } from '@/api';
 import { computed, nextTick, reactive, ref, toRef, unref, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+const router = useRouter()
 import { NButton, NPopconfirm, useMessage } from 'naive-ui';
 import { jobQ, queue } from '@/common/pq';
 import { noop, useLocalStorage, watchDebounced, watchThrottled } from '@vueuse/core';
@@ -433,29 +435,23 @@ const cardCols = reactive([
     title: '部署环境(如果有)',
     key: 'domin',
         render(rowData) {
-      return rowData['buildParams'][1]['Value'];
+      return rowData?.buildParams?.find((item)=>
+        item.name == 'domin'
+      )?.Value ?? ''
     },
   },
-  // {
-  //   title: '日志',
-  //   key: 'record',
-  //   render(rowData, rowIndex) {
-  //     const toShowRecord = (job) => {
-  //       return getRecord({
-  //         jobName: job.jobName,
-  //         buildId: job.number,
-  //       }).then((res) => {
-  //         if (res.code == 200) {
-            
-  //         }
-  //       });
-  //     };
-  //     return <NButton
-  //         text
-  //         onClick={toShowRecord(rowData)}
-  //     >{ rowData.number }</NButton>;
-  //   },
-  // },
+  {
+    title: '日志',
+    key: 'record',
+    render(rowData, rowIndex) {
+      return <NButton
+          slot="trigger"
+          text
+          type="primary"
+          onClick={()=>toShowRecord(rowData)}
+      >查看</NButton>;
+    },
+  },
   {
     title: '操作',
     render(rowData) {
@@ -506,6 +502,16 @@ const isBuildCols = reactive([
   tableColBuildStatus,
   cardCols[2],
 ]);
+const toShowRecord = (job) => {
+  let newpage = router.resolve({ 
+        path: "/console",
+        query:{
+          jobName: job.jobName,
+          buildId: job.number,
+        }
+      })
+  window.open(newpage.href, '_blank');
+};
 const longestCommonPrefix = function(strs) {
   if (strs == null || strs.length == 0) return '';
   let l = strs[0].length;
