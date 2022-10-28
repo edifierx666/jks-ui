@@ -461,7 +461,7 @@ const cardCols = reactive([
           buildId: job.number,
         }).then((res) => {
           if (res.code == 200) {
-            setTimeout(() => getJobBuildDetailApi(job), 1000);
+            setTimeout(() => getJobBuildDetailApi(job), 3000);
           }
         });
       };
@@ -503,7 +503,7 @@ const isBuildCols = reactive([
   cardCols[2],
 ]);
 const toShowRecord = (job) => {
-  let newpage = router.resolve({ 
+  let newpage = router.resolve({
         path: "/console",
         query:{
           jobName: job.jobName,
@@ -650,7 +650,7 @@ const buildJobHandle = (job) => {
       setTimeout(() => {
         getJobApi(job);
         job.buildQueue = false;
-      }, 15 * 1000);
+      }, 7 * 1000);
     } else {
       message.error(res.message);
       job.buildQueue = false;
